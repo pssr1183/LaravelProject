@@ -29,6 +29,10 @@ Route::middleware([
         return view('dashboard', ['courses' => $courses]);
     })->name('dashboard');
 });
+Route::get('/page', function () {
+    $courses = Course::where('user_id', auth()->id())->get();
+    return view('pages', ['courses' => $courses]);
+});
 // Route::get('/dashboard', function () {
 //     $courses = Course::all();
 //     return view('dashboard', ['courses' => $courses]);
