@@ -1,6 +1,8 @@
 <?php
 
+use App\Models\Course;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\CourseController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,6 +25,13 @@ Route::middleware([
     'verified',
 ])->group(function () {
     Route::get('/dashboard', function () {
-        return view('dashboard');
+        $courses = Course::where('user_id',auth()->id())->get( );
+        return view('dashboard', ['courses' => $courses]);
     })->name('dashboard');
 });
+// Route::get('/dashboard', function () {
+//     $courses = Course::all();
+//     return view('dashboard', ['courses' => $courses]);
+// });
+
+Route::post('/create-course', [CourseController::class, 'createCourse']);
