@@ -37,6 +37,7 @@ class CourseController extends Controller
 
         // Fetch pages related to this course
         $pages = Page::where('course_id', $courseId)->get();
+        if($pages->count()===0) return redirect('/dashboard');
 
         $currentPage = $pageId ? Page::findOrFail($pageId) : $pages->first();
 
@@ -50,6 +51,24 @@ class CourseController extends Controller
             'previousPage' => $previousPage,
             'nextPage' => $nextPage
         ]);
+    }
+    public function courseEditScreen(Course $course){
+        return view('editCourse',['course' => $course]);
+    }
+    public function editCourse(Course $course, Request $request){
+        $data = $request->validate(
+            [
+                'name' => 'required',
+                'description' => 'required',
+            ]
+        );
+        $course->update($data);
+        return redirect('/dashboard');
+    }
+    public function deleteCourse(Course $course)
+    {
+        $course->delete();
+        return redirect('/dashboard');
     }
 
 }

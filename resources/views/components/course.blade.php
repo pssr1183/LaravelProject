@@ -48,9 +48,17 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $course['name'] }}</td>
                                 <td class="border px-4 py-2">{{ $course['description'] }}</td>
-                                <td class="border px-4 py-2 md:w-3/4 lg:w-1/2 p-4  justify-between ">
+                                <td class="border px-4 py-2 md:w-1/4 lg:w-1/2 p-4  justify-between ">
                                     <a href="{{ route('courses.pages', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Pages</a>
                                     <a href="{{ route('courses.play', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Play</a>
+                                    <a href="{{ route('course.editScreen', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Edit</a>
+                                    <div class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+                                        <form action="{{ route('course.deleteCourse', ['course' => $course]) }}" method="POST">
+                                            @csrf
+                                            @method("DELETE")
+                                            <button type="submit" class="btn btn-danger">Delete</button>
+                                        </form>
+                                    </div>
 
                                 </td>
                             </tr>

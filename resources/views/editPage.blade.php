@@ -1,7 +1,5 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <div>
-    $course=null;
-
     <div id="formModal" class="fixed inset-0 flex items-center justify-center ">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full md:w-3/4 lg:w-1/2">
             <h2 class="text-xl mb-4">Edit Page to Course</h2>

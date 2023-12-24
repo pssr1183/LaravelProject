@@ -34,17 +34,17 @@ Route::middleware([
     // routes/web.php
 
     Route::get('/courses/{course}/play/{page?}', [CourseController::class, 'play'])->name('courses.play');
-
-    
     Route::post('/create-course', [CourseController::class, 'createCourse']);
+    //page routings
     Route::post('/courses/{course}/create-page', [PageController::class, 'createPage'])->name('pages.store');
-
-    //edit 
-    // Route::get('/courses/{course}/edit-post/{page}',[PageController::class,'showEditScreen']);
+    //edit page
     Route::get('/courses/{course}/pages/{page}/edit', [PageController::class, 'showEditScreen'])->name('pages.editScreen');
     Route::put('/courses/{course}/pages/{page}/edit', [PageController::class, 'editPage'])->name('pages.editPage');
     Route::delete('/courses/{course}/pages/{page}/delete', [PageController::class, 'deletePage'])->name('pages.deletePage');
-
+    //edit course
+    Route::get('/courses/{course}/edit', [CourseController::class, 'courseEditScreen'])->name('course.editScreen');
+    Route::put('/courses/{course}/edit', [CourseController::class, 'editCourse'])->name('course.editCourse');
+    Route::delete('/courses/{course}/delete', [CourseController::class, 'deleteCourse'])->name('course.deleteCourse');
 
 });
 // Route::get('/page', function () {
