@@ -1,7 +1,9 @@
 <?php
 
+use App\Models\Page;
 use App\Models\Course;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PageController;
 use App\Http\Controllers\CourseController;
 
 /*
@@ -28,14 +30,27 @@ Route::middleware([
         $courses = Course::where('user_id',auth()->id())->get( );
         return view('dashboard', ['courses' => $courses]);
     })->name('dashboard');
+    Route::get('/courses/{course}/pages', [CourseController::class, 'showPagesForCourse'])->name('courses.pages');
+    // routes/web.php
+
+    Route::get('/courses/{course}/play/{page?}', [CourseController::class, 'play'])->name('courses.play');
+
+    
+    Route::post('/create-course', [CourseController::class, 'createCourse']);
+    Route::post('/courses/{course}/create-page', [PageController::class, 'createPage'])->name('pages.store');
+
 });
-Route::get('/page', function () {
-    $courses = Course::where('user_id', auth()->id())->get();
-    return view('pages', ['courses' => $courses]);
-});
+// Route::get('/page', function () {
+//     $pages= null;
+//     $courses = Course::where('user_id', auth()->id())->get();
+
+//         $pages = Page::where('course_id', $courses->id)->get();
+
+//     return view('pages',['courses' => $courses, 'pages' => $pages]);
+// });
+    
 // Route::get('/dashboard', function () {
 //     $courses = Course::all();
 //     return view('dashboard', ['courses' => $courses]);
 // });
 
-Route::post('/create-course', [CourseController::class, 'createCourse']);

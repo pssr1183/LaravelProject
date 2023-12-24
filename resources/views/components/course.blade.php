@@ -1,12 +1,13 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <div class="py-12">
+
     <div class="">
         <div class="">
             <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
                 <!-- Flex container for aligning items -->
                 <div class="w-full md:w-3/4 lg:w-1/2 p-4 bg-white rounded-lg shadow-md flex items-center justify-between mb-4">
                     <p class="text-lg">Showing all available courses</p>
-                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Create Form</button>
+                    <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Create Course</button>
                 </div>
 
                 <div id="modalBackground" class="fixed inset-0 bg-black opacity-50 hidden"></div>
@@ -48,8 +49,8 @@
                                 <td class="border px-4 py-2">{{ $course['name'] }}</td>
                                 <td class="border px-4 py-2">{{ $course['description'] }}</td>
                                 <td class="border px-4 py-2 md:w-3/4 lg:w-1/2 p-4  justify-between ">
-                                    <a href="{{ url('/page') }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Add Page</a>
-                                    <a href="#" class="bg-green-500 hover:bg-green-600 text-white px-2 py-1 rounded-md">Play</a>
+                                    <a href="{{ route('courses.pages', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Pages</a>
+                                    <a href="{{ route('courses.play', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Play</a>
 
                                 </td>
                             </tr>

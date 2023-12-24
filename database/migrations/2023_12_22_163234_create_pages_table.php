@@ -13,7 +13,14 @@ return new class extends Migration
     {
         Schema::create('pages', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('course_id')->notNull();
+            $table->string('title')->notNull();
+            $table->string('image_path')->nullable();
+            $table->text('content')->notNull();
             $table->timestamps();
+
+            $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
+            
         });
     }
 

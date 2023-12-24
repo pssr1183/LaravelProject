@@ -836,14 +836,54 @@
         @if (Route::has('login'))
         <div class="sm:fixed sm:top-0 sm:right-0 p-6 text-right z-10">
             @auth
-            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Dashboard</a>
+            <a href="{{ url('/dashboard') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">{{Auth::user()->name}}</a>
 
             @else
-            <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
+            <!-- <a href="{{ route('login') }}" class="font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Log in</a>
 
             @if (Route::has('register'))
-            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a>
+            <a href="{{ route('register') }}" class="ml-4 font-semibold text-gray-600 hover:text-gray-900 dark:text-gray-400 dark:hover:text-white focus:outline focus:outline-2 focus:rounded-sm focus:outline-red-500">Register</a> -->
             @endif
             @endauth
         </div>
         @endif
+        <!DOCTYPE html>
+        <html lang="en">
+
+        <head>
+            <meta charset="UTF-8">
+            <meta name="viewport" content="width=device-width, initial-scale=1.0">
+            <title>Course Cure</title>
+            <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+        </head>
+
+        <body class="bg-gray-100">
+
+            <div class="flex flex-col items-center justify-center min-h-screen py-6 bg-gray-100">
+                <!-- Title -->
+                <h1 class="text-5xl font-bold mb-4 text-center text-blue-500">Course Cure</h1>
+
+                <!-- Tagline -->
+                <p class="text-xl mb-8 text-center text-gray-700">Empowering your learning journey, one course at a time.</p>
+
+                <!-- Call to Action Button -->
+                @auth
+                <a href="{{ url('/dashboard') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded">
+                    Start Learning
+                </a>
+                @else
+                <div class="flex space-x-4">
+                    <a href="{{ url('/login') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded">
+                        login
+                    </a>
+                    <a href="{{ url('/register') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-6 rounded">
+                        Register
+                    </a>
+                </div>
+
+                @endauth
+            </div>
+
+        </body>
+
+        </html>
