@@ -34,4 +34,30 @@ Page::create([
 // Redirect back to the course page with a success message
 return redirect()->route('courses.pages',['course' => $course->id]);
 }
+    public function showEditScreen(Course $course ,Page $page)
+    {
+        return view('editPage', ['course' => $course,'page'=>$page]);
+    }
+    public function editPage(Course $course, Page $page, Request $request)
+    {
+        $data = $request->validate([
+            'title' => 'required|string|max:255',
+            'image' => 'required|image|max:2048',
+            'content' => 'required|string',
+
+            // Add other validation rules as needed
+        ]);
+        $imagePath = $request->file('image')->store('public/images');
+        $imageUrl = Storage::url($imagePath);
+
+        $data = array_merge($data, ['image_path' => $imageUrl]);
+        $page->update($data);
+
+        return redirect()->route('courses.pages', ['course' => $course->id]);
+    }
+    public function deletePage(Course $course, Page $page){
+                $page->delete();
+        return redirect()->route('courses.pages', ['course' => $course->id]);
+    }
+
 }

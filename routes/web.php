@@ -39,6 +39,13 @@ Route::middleware([
     Route::post('/create-course', [CourseController::class, 'createCourse']);
     Route::post('/courses/{course}/create-page', [PageController::class, 'createPage'])->name('pages.store');
 
+    //edit 
+    // Route::get('/courses/{course}/edit-post/{page}',[PageController::class,'showEditScreen']);
+    Route::get('/courses/{course}/pages/{page}/edit', [PageController::class, 'showEditScreen'])->name('pages.editScreen');
+    Route::put('/courses/{course}/pages/{page}/edit', [PageController::class, 'editPage'])->name('pages.editPage');
+    Route::delete('/courses/{course}/pages/{page}/delete', [PageController::class, 'deletePage'])->name('pages.deletePage');
+
+
 });
 // Route::get('/page', function () {
 //     $pages= null;

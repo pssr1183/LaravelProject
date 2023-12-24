@@ -63,6 +63,16 @@
                 <div>
                     <div class="text-xl font-semibold">{{ $page->title }}</div>
                     <p class="text-gray-600">{{ $page->content }}</p>
+                    <p><a href="{{ route('pages.editScreen', ['course' => $course->id,'page' => $page->id]) }}">Edit Page</a></p>
+
+                    <br>
+                    <div class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
+                        <form action="{{ route('pages.deletePage', ['course' => $course, 'page' => $page]) }}" method="POST">
+                            @csrf
+                            @method("DELETE")
+                            <button type="submit" class="btn btn-danger">Delete</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
