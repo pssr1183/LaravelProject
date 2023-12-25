@@ -15,8 +15,8 @@
                 </div>
 
                 <div class="mb-4">
-                    <label for="image" class="block text-sm font-medium text-gray-600">Image</label>
-                    <input type="file" id="image" name="image" class="mt-1 p-2 w-full border rounded-md">
+                    <label for="media" class="block text-sm font-medium text-gray-600">media</label>
+                    <input type="file" id="media" name="media" class="mt-1 p-2 w-full border rounded-md">
                 </div>
 
                 <div class="mb-4">

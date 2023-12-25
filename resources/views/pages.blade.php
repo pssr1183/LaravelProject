@@ -37,8 +37,8 @@
                     </div>
 
                     <div class="mb-4">
-                        <label for="image" class="block text-sm font-medium text-gray-600">Image</label>
-                        <input type="file" id="image" name="image" class="mt-1 p-2 w-full border rounded-md">
+                        <label for="media" class="block text-sm font-medium text-gray-600">Media</label>
+                        <input type="file" id="media" name="media" class="mt-1 p-2 w-full border rounded-md">
                     </div>
 
                     <div class="mb-4">
@@ -59,7 +59,14 @@
         @foreach($pages as $page)
         <div class="my-4 flex items-center justify-center"> <!-- Center the card vertically -->
             <div class="bg-white p-6 rounded-lg shadow-md flex items-center w-3/4"> <!-- Adjusted width here -->
-                <img class="h-32 w-32 object-cover rounded-md mr-4" src="{{ $page->image_path }}" alt="{{ $page->title }}">
+                @if($page->image_path)
+                <img src="{{ asset($page->image_path) }}" alt="{{ $page->title }}">
+                @elseif($page->video_path)
+                <video width="320" height="240" controls>
+                    <source src="{{ asset($page->video_path) }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                @endif
                 <div>
                     <div class="text-xl font-semibold">{{ $page->title }}</div>
                     <p class="text-gray-600">{{ $page->content }}</p>

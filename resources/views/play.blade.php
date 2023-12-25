@@ -14,9 +14,9 @@
         <a href="{{ route('dashboard') }}" class="py-2 px-4 bg-red-500 text-white rounded">Exit Course</a>
     </div>
 
-    
+
     <div class="flex w-full max-w-10xl"> <!-- Increased max width to 6xl for larger content area -->
-    
+
         <!-- Left Sidebar for Pages List -->
         <div class="w-1/4 p-5 bg-white rounded shadow">
             <h2 class="text-xl font-bold mb-5">Pages</h2>
@@ -45,7 +45,15 @@
             <!-- Displaying the Current Page Content -->
             <div class="">
                 <h1 class="text-2xl font-bold mb-5 flex justify-center items-center h-full">{{ $currentPage->title }}</h1>
-                <img src="{{ $currentPage->image_path }}" alt="{{ $currentPage->title }}" class="mb-5">
+                @if($currentPage->image_path)
+                <!-- Display Image if image_path exists -->
+                <img class="h-32 w-32 object-cover rounded-md mr-4" src="{{ $currentPage->image_path }}" alt="{{ $currentPage->title }}">
+                @elseif($currentPage->video_path)
+                <video class="h-32 w-32 rounded-md mr-4" controls>
+                    <source src="{{ $currentPage->video_path }}" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                @endif
                 <div class="p-5 bg-grey-200 rounded">
                     <p>{{ $currentPage->content }}</p>
                 </div>
