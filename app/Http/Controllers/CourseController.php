@@ -21,7 +21,7 @@ class CourseController extends Controller
         $incomingFields['description'] = strip_tags($incomingFields['description']);
         $incomingFields['user_id'] = auth()->id();
         Course::create($incomingFields);
-        return redirect('/');
+        return redirect()->route('dashboard')->with('course_creation_success', 'Course created successfully!');
     }
     public function showPagesForCourse(Course $course)
     {
@@ -69,7 +69,7 @@ class CourseController extends Controller
             ]
         );
         $course->update($data);
-        return redirect('/dashboard');
+        return redirect()->route('dashboard')->with('course_edit_success', 'Course updated successfully!');
     }
     public function deleteCourse(Course $course)
     {

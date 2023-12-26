@@ -37,7 +37,7 @@ class PageController extends Controller
         ]);
 
         // Redirect back to the course page with a success message
-        return redirect()->route('courses.pages', ['course' => $course->id]);
+        return redirect()->route('courses.pages', ['course' => $course->id])->with('page_creation_success', 'page created successfully!');
     }
     public function showEditScreen(Course $course, Page $page)
     {
@@ -45,26 +45,36 @@ class PageController extends Controller
     }
     public function editPage(Course $course, Page $page, Request $request)
     {
+        // Validate the request data
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:4096',
+            'media' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:4096', // Make media field nullable
             'content' => 'required|string',
-
-            // Add other validation rules as needed
         ]);
-        $isImage = $request->file('media')->isValid() && in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
 
-        // Store the uploaded file in the appropriate storage directory
-        $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
+        // Check if a media file is provided in the request
+        if ($request->hasFile('media') && $request->file('media')->isValid()) {
+            // Determine if the uploaded file is an image or video
+            $isImage = in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
 
-        // Get the public URL of the stored media
-        $mediaUrl = Storage::url($mediaPath);
+            // Store the uploaded file in the appropriate storage directory
+            $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
 
-        $data = array_merge($data, ['image_path' => $isImage ? $mediaUrl : null, 'video_path' => !$isImage ? $mediaUrl : null]);
+            // Get the public URL of the stored media
+            $mediaUrl = Storage::url($mediaPath);
+
+            // Update the media paths in the data array
+            $data['image_path'] = $isImage ? $mediaUrl : null;
+            $data['video_path'] = !$isImage ? $mediaUrl : null;
+        }
+
+        // Update the page with the validated and processed data
         $page->update($data);
 
-        return redirect()->route('courses.pages', ['course' => $course->id]);
+        // Redirect back to the course pages with a success message
+        return redirect()->route('courses.pages', ['course' => $course->id])->with('page_edit_success', 'Page updated successfully!');
     }
+
     public function deletePage(Course $course, Page $page)
     {
         $userCurrentPage = session("course_{$course->id}_user_" . auth()->id());
