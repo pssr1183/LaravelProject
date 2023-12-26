@@ -26,9 +26,16 @@
 
                 <div class="flex justify-end">
                     <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">Create</button>
-                    <button type="button" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md" onclick="closeModal()">Cancel</button>
+                    <button type="button" class="ml-4 bg-gray-300 hover:bg-gray-400 text-gray-700 px-4 py-2 rounded-md" onclick="redirectToPages()">Cancel</button>
                 </div>
             </form>
         </div>
     </div>
 </div>
+<script>
+    function redirectToPages() {
+        // Assuming your dashboard route is '/dashboard'.
+        // You can replace this with the actual route you want to redirect to.
+        window.location.href = "{{ route('courses.pages',['course' => $page->course_id]) }}";
+    }
+</script>

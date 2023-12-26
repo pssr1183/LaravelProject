@@ -19,7 +19,7 @@ use App\Http\Controllers\CourseController;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Route::middleware([
     'auth:sanctum',

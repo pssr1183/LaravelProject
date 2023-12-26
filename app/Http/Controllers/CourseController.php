@@ -37,9 +37,15 @@ class CourseController extends Controller
 
         // Fetch pages related to this course
         $pages = Page::where('course_id', $courseId)->get();
-        if($pages->count()===0) return redirect('/dashboard');
-
-        $currentPage = $pageId ? Page::findOrFail($pageId) : $pages->first();
+        if($pages->count()===0)
+        return redirect('/dashboard')->with('error', 'No pages available for this course.');;
+        session(["course_{$courseId}_user_" . auth()->id() => $pageId]);
+        $lastVisitedPage = session("course_{$courseId}_user_" . auth()->id());
+        if ($lastVisitedPage) {
+            $currentPage = Page::findOrFail($lastVisitedPage);
+        } else {
+            $currentPage = $pageId ? Page::findOrFail($pageId) : $pages->first();
+        }
 
         $previousPage = $pages->where('id', '<', $currentPage->id)->last(); // Get the previous page
         $nextPage = $pages->where('id', '>', $currentPage->id)->first(); // Get the next page

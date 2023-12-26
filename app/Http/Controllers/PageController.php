@@ -22,7 +22,7 @@ class PageController extends Controller
         $isImage = $request->file('media')->isValid() && in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
 
         // Store the uploaded file in the appropriate storage directory
-        $mediaPath = $isImage ? $request->file('media')->store('public/images') :$request->file('media')->store('public/videos');
+        $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
 
         // Get the public URL of the stored media
         $mediaUrl = Storage::url($mediaPath);
@@ -47,22 +47,40 @@ class PageController extends Controller
     {
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'image' => 'required|image|max:2048',
+            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:4096',
             'content' => 'required|string',
 
             // Add other validation rules as needed
         ]);
-        $imagePath = $request->file('image')->store('public/images');
-        $imageUrl = Storage::url($imagePath);
+        $isImage = $request->file('media')->isValid() && in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
 
-        $data = array_merge($data, ['image_path' => $imageUrl]);
+        // Store the uploaded file in the appropriate storage directory
+        $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
+
+        // Get the public URL of the stored media
+        $mediaUrl = Storage::url($mediaPath);
+
+        $data = array_merge($data, ['image_path' => $isImage ? $mediaUrl : null, 'video_path' => !$isImage ? $mediaUrl : null]);
         $page->update($data);
 
         return redirect()->route('courses.pages', ['course' => $course->id]);
     }
     public function deletePage(Course $course, Page $page)
     {
+        $userCurrentPage = session("course_{$course->id}_user_" . auth()->id());
+
+        if ($userCurrentPage == $page->id) {
+            // Fetch the first page of the course
+            $firstPage = Page::where('course_id', $course->id)->orderBy('id', 'asc')->first();
+
+            // Update user's session to point to the first page
+            session(["course_{$course->id}_user_" . auth()->id() => $firstPage->id]);
+        }
+
+        // Delete the page
         $page->delete();
+
+
         return redirect()->route('courses.pages', ['course' => $course->id]);
     }
 }

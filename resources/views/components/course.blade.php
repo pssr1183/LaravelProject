@@ -1,12 +1,14 @@
 <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 <div class="py-12">
-
-    <div class="">
+    <div class=" top-0 left-10 mt-20 ml-10">
+        <a href="{{ route('welcome') }}" class="py-2 px-4 bg-blue-500 text-white rounded">Home</a>
+    </div>
+    <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center mt --4 ml--4">
         <div class="">
-            <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+            <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center ">
                 <!-- Flex container for aligning items -->
-                <div class="w-full md:w-3/4 lg:w-1/2 p-4 bg-white rounded-lg shadow-md flex items-center justify-between mb-4">
-                    <p class="text-lg">Showing all available courses</p>
+                <div class="w-full md:w-5/6 lg:w-2/3 p-4 bg-white rounded-lg shadow-md flex items-center justify-between mb-4">
+                    <p class="text-lg">Showing all the available courses</p>
                     <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Create Course</button>
                 </div>
 
@@ -33,8 +35,9 @@
                         </form>
                     </div>
                 </div>
+                
                 <!-- Table of Courses -->
-                <div class="w-full md:w-3/4 lg:w-1/2 p-4 bg-white rounded-lg shadow-md">
+                <div class="w-full md:w-5/6 lg:w-2/3 p-4 bg-white rounded-lg shadow-md">
                     <table class="min-w-full">
                         <thead>
                             <tr>
@@ -48,18 +51,19 @@
                             <tr>
                                 <td class="border px-4 py-2">{{ $course['name'] }}</td>
                                 <td class="border px-4 py-2">{{ $course['description'] }}</td>
-                                <td class="border px-4 py-2 md:w-1/4 lg:w-1/2 p-4  justify-between ">
-                                    <a href="{{ route('courses.pages', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Pages</a>
-                                    <a href="{{ route('courses.play', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Play</a>
-                                    <a href="{{ route('course.editScreen', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Edit</a>
-                                    <div class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md">
-                                        <form action="{{ route('course.deleteCourse', ['course' => $course]) }}" method="POST">
-                                            @csrf
-                                            @method("DELETE")
-                                            <button type="submit" class="btn btn-danger">Delete</button>
-                                        </form>
+                                <td class="border px-4 py-2">
+                                    <div class="flex items-center space-x-2"> <!-- Using flexbox with horizontal direction -->
+                                        <a href="{{ route('courses.pages', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Addpage</a>
+                                        <a href="{{ route('courses.play', ['course' => $course->id, 'page' => session("course_{$course->id}_user_" . auth()->id())]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Play</a>
+                                        <a href="{{ route('course.editScreen', ['course' => $course->id]) }}" class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">Edit</a>
+                                        <div class="bg-blue-500 hover:bg-blue-600 text-white px-2 py-1 rounded-md">
+                                            <form action="{{ route('course.deleteCourse', ['course' => $course]) }}" method="POST">
+                                                @csrf
+                                                @method("DELETE")
+                                                <button type="submit" class="btn btn-danger">Delete</button>
+                                            </form>
+                                        </div>
                                     </div>
-
                                 </td>
                             </tr>
                             @endforeach
@@ -77,6 +81,11 @@
                     function closeModal() {
                         document.getElementById('modalBackground').classList.add('hidden');
                         document.getElementById('formModal').classList.add('hidden');
+                    }
+                    let errorMessage = '{{ session("error") }}';
+
+                    if (errorMessage) {
+                        alert(errorMessage);
                     }
                 </script>
 
