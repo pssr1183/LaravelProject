@@ -22,8 +22,6 @@
  </div>
  <script>
      function redirectToDashboard() {
-         // Assuming your dashboard route is '/dashboard'.
-         // You can replace this with the actual route you want to redirect to.
          window.location.href = "{{ route('dashboard') }}";
      }
  </script>

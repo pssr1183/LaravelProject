@@ -30,7 +30,7 @@
             <button id="prevPage" class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="goToDashBoard()">Back</button>
         </div>
 
-
+        <!-- If the course has no pages then place the Add Page button in the middle -->
         @if($pages->count()==0)
         <button class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-1xl font-semibold bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Add Page</button>
         @else
@@ -41,7 +41,7 @@
 
 
 
-        <!-- Modal Background -->
+        
         <div id="modalBackground" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 
         <!-- Form Modal -->
@@ -50,7 +50,7 @@
                 <h2 class="text-xl mb-4">Add Page to Course</h2>
                 <form action="{{ route('pages.store', $course->id) }}" method="post" enctype="multipart/form-data" onsubmit="return validateForm()">
                     @csrf
-                    <!-- Course ID if needed -->
+                   
 
 
                     <div class="mb-4">
@@ -78,8 +78,7 @@
 
 
 
-        <!-- Example Pages (You can loop through your pages here) -->
-        <!-- Example Pages (You can loop through your pages here) -->
+      
         @foreach($pages as $index => $page)
         <div class="my-8"></div>
         <div class="my-4 flex items-center justify-center"> <!-- Center the card vertically -->

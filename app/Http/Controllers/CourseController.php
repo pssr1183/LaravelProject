@@ -8,7 +8,7 @@ use Illuminate\Http\Request;
 
 class CourseController extends Controller
 {
-    //
+    //Course Creation
     public function createCourse(Request $request)
     {
         $incomingFields = $request->validate(
@@ -23,14 +23,16 @@ class CourseController extends Controller
         Course::create($incomingFields);
         return redirect()->route('dashboard')->with('course_creation_success', 'Course created successfully!');
     }
+    //Show pages of the course
     public function showPagesForCourse(Course $course)
     {
-        // Fetch all pages associated with the selected course
+        
         $pages = Page::where('course_id', $course->id)->get();
 
         // Return the view with the pages for the selected course
         return view('pages', ['course' => $course, 'pages' => $pages]);
     }
+    //Play the course
     public function play($courseId, $pageId = null)
     {
         $course = Course::findOrFail($courseId);
@@ -47,8 +49,8 @@ class CourseController extends Controller
             $currentPage = $pageId ? Page::findOrFail($pageId) : $pages->first();
         }
 
-        $previousPage = $pages->where('id', '<', $currentPage->id)->last(); // Get the previous page
-        $nextPage = $pages->where('id', '>', $currentPage->id)->first(); // Get the next page
+        $previousPage = $pages->where('id', '<', $currentPage->id)->last(); // previous page
+        $nextPage = $pages->where('id', '>', $currentPage->id)->first(); // next page
 
         return view('play', [
             'course' => $course,
@@ -58,6 +60,7 @@ class CourseController extends Controller
             'nextPage' => $nextPage
         ]);
     }
+    //Update/Edit Course
     public function courseEditScreen(Course $course){
         return view('editCourse',['course' => $course]);
     }
@@ -71,6 +74,7 @@ class CourseController extends Controller
         $course->update($data);
         return redirect()->route('dashboard')->with('course_edit_success', 'Course updated successfully!');
     }
+    //Delete Course
     public function deleteCourse(Course $course)
     {
         $course->delete();

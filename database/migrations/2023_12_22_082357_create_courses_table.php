@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('name', 64)->notNull();
             $table->text('description',255)->notNull();
             $table->unsignedBigInteger('user_id')->notNull();
-            $table->timestamps();  // This will automatically add created_at and updated_at columns
+            $table->timestamps();
 
-            // Foreign key constraint
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }

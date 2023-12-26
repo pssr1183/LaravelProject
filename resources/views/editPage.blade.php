@@ -2,11 +2,11 @@
 <div >
     <div id="formModal" class="fixed inset-0 flex items-center justify-center ">
         <div class="bg-white p-6 rounded-lg shadow-lg w-full md:w-1/6 lg:w-2/5 overflow-y-auto max-h-[80vh]"
-            <h2 class="text-xl mb-4">Edit Page to Course</h2>
+            <h2 class="text-xl mb-4">Edit Page: {{$page->title}}</h2>
             <form action="{{ route('pages.editPage', ['course' => $course->id, 'page' => $page->id]) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method("PUT")
-                <!-- Course ID if needed -->
+               
 
 
                 <div class="mb-4">
@@ -28,16 +28,8 @@
                     @endif
 
                     <!-- Input field for new media -->
-                    <!-- <input type="file" id="media" name="media" class="mt-1 p-2 w-full border rounded-md">
-                    <small class="block text-gray-500 mt-2">Existing Media:
-                        @if($page->image_path)
-                        <a href="{{ $page->image_path }}" target="_blank">View Image</a>
-                        @elseif($page->video_path)
-                        <a href="{{ $page->video_path }}" target="_blank">View Video</a>
-                        @else
-                        None
-                        @endif
-                    </small> -->
+                    <input type="file" id="media" name="media" class="mt-1 p-2 w-full border rounded-md">
+                    </small>
                 </div>
 
                 <div class="mb-4">
@@ -55,8 +47,6 @@
 </div>
 <script>
     function redirectToPages() {
-        // Assuming your dashboard route is '/dashboard'.
-        // You can replace this with the actual route you want to redirect to.
         window.location.href = "{{ route('courses.pages',['course' => $page->course_id]) }}";
     }
 </script>

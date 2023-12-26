@@ -8,6 +8,7 @@
         <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center mt--4 ml--4">
             <div class="">
                 <div class="bg-gray-100 min-h-screen flex flex-col items-center justify-center">
+                    <!-- if there are courses associated for a particular user then display the create course button in the middle -->
                     @if($courses->count()==0)
                     <button class="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 text-1xl font-semibold bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Create Course</button>
                     @else
@@ -16,6 +17,7 @@
                         <button class="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-md" onclick="openModal()">Create Course</button>
                     </div>
                     @endif
+                    <!-- Modal for the course creation  -->
 
                     <div id="modalBackground" class="fixed inset-0 bg-black opacity-50 hidden"></div>
 
@@ -39,7 +41,7 @@
                             </form>
                         </div>
                     </div>
-
+                    <!-- If the user be able create a course successfully then it'll alert the user that it has been successfull -->
                     @if(session('course_creation_success'))
                     <div id="courseCreateSuccess" class="bg-green-200 text-green-800 p-4 rounded-md mb-4">
                         {{ session('course_creation_success') }}
@@ -50,6 +52,7 @@
                         {{ session('course_edit_success') }}
                     </div>
                     @endif
+                    <!-- Iterating through the available courses -->
                     @if($courses->count()>0)
                     <div class="w-full md:w-10/8 lg:w-5/2 p-6 bg-white rounded-lg shadow-md overflow-x-auto">
                         <table class="min-w-full">

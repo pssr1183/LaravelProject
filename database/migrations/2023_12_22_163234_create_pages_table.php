@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('course_id')->notNull();
             $table->string('title')->notNull();
-            $table->string('image_path')->nullable(); // Column for image URL
+            $table->string('image_path')->nullable(); 
             $table->string('video_path')->nullable();
             $table->text('content')->notNull();
             $table->timestamps();

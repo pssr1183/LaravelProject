@@ -14,20 +14,19 @@ class PageController extends Controller
         // Validate incoming fields from the request
         $request->validate([
             'title' => 'required|string|max:255',
-            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:4096', // Ensure it's an image and within 2MB
+            'media' => 'required|file|mimes:jpg,jpeg,png,mp4|max:4096',
             'content' => 'required|string',
         ]);
 
-        // Store the uploaded image in the storage directory
+       //stores in the public/image
         $isImage = $request->file('media')->isValid() && in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
-
-        // Store the uploaded file in the appropriate storage directory
+        //stores in the public/video
         $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
 
-        // Get the public URL of the stored media
+        // Gets the public url to store and retrive the media data
         $mediaUrl = Storage::url($mediaPath);
 
-        // Create a new page record
+        // Page creation
         Page::create([
             'title' => strip_tags($request->title),
             'image_path' => $isImage ? $mediaUrl : null, // Store image URL if it's an image, otherwise null
@@ -36,7 +35,7 @@ class PageController extends Controller
             'course_id' => $course->id,
         ]);
 
-        // Redirect back to the course page with a success message
+        //return to course pages with the success message
         return redirect()->route('courses.pages', ['course' => $course->id])->with('page_creation_success', 'page created successfully!');
     }
     public function showEditScreen(Course $course, Page $page)
@@ -45,10 +44,10 @@ class PageController extends Controller
     }
     public function editPage(Course $course, Page $page, Request $request)
     {
-        // Validate the request data
+       //validation
         $data = $request->validate([
             'title' => 'required|string|max:255',
-            'media' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:4096', // Make media field nullable
+            'media' => 'nullable|file|mimes:jpg,jpeg,png,mp4|max:4096', 
             'content' => 'required|string',
         ]);
 
@@ -57,21 +56,21 @@ class PageController extends Controller
             // Determine if the uploaded file is an image or video
             $isImage = in_array($request->file('media')->getClientOriginalExtension(), ['jpg', 'jpeg', 'png']);
 
-            // Store the uploaded file in the appropriate storage directory
+            
             $mediaPath = $isImage ? $request->file('media')->store('public/images') : $request->file('media')->store('public/videos');
 
             // Get the public URL of the stored media
             $mediaUrl = Storage::url($mediaPath);
 
-            // Update the media paths in the data array
+            // Update the media paths 
             $data['image_path'] = $isImage ? $mediaUrl : null;
             $data['video_path'] = !$isImage ? $mediaUrl : null;
         }
 
-        // Update the page with the validated and processed data
+        // Update the page 
         $page->update($data);
 
-        // Redirect back to the course pages with a success message
+        // Redirect to the course pages with a success message
         return redirect()->route('courses.pages', ['course' => $course->id])->with('page_edit_success', 'Page updated successfully!');
     }
 
@@ -85,6 +84,14 @@ class PageController extends Controller
 
             // Update user's session to point to the first page
             session(["course_{$course->id}_user_" . auth()->id() => $firstPage->id]);
+        }
+        //delete the media file in respective folders by using Storage facade
+        if ($page->image_path) {
+            Storage::delete(str_replace('/storage', 'public', $page->image_path));
+        }
+
+        if ($page->video_path) {
+            Storage::delete(str_replace('/storage', 'public', $page->video_path));
         }
 
         // Delete the page
